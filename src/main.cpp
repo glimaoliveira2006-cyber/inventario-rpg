@@ -10,20 +10,57 @@ void mostrarMenu() {
     std::cout << "2 Usar" << std::endl;
     std::cout << "3 Descartar" << std::endl;
     std::cout << "4 Listar" << std::endl;
+    std::cout << "5 Buscar" << std::endl;
     std::cout << "0 Sair" << std::endl;
 }
 
-void coletar(Inventario& inventario) {
+std::string lerNome(const std::string& rotulo) {
     std::string nome;
-    int peso;
-    int quantidade;
+    while (true) {
+        std::cout << rotulo;
+        std::getline(std::cin, nome);
+        if (!nome.empty()) {
+            return nome;
+        }
+        std::cout << "Entrada invalida." << std::endl;
+    }
+}
 
-    std::cout << "Nome: ";
-    std::cin >> nome;
-    std::cout << "Peso: ";
-    std::cin >> peso;
-    std::cout << "Quantidade: ";
-    std::cin >> quantidade;
+int lerInteiroPositivo(const std::string& rotulo) {
+    int valor;
+    while (true) {
+        std::cout << rotulo;
+        if (std::cin >> valor) {
+            std::cin.ignore(1000, '\n');
+            if (valor > 0) {
+                return valor;
+            }
+        } else {
+            std::cin.clear();
+            std::cin.ignore(1000, '\n');
+        }
+        std::cout << "Entrada invalida." << std::endl;
+    }
+}
+
+int lerOpcao() {
+    int opcao;
+    while (true) {
+        std::cout << "Opcao: ";
+        if (std::cin >> opcao) {
+            std::cin.ignore(1000, '\n');
+            return opcao;
+        }
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+        std::cout << "Entrada invalida." << std::endl;
+    }
+}
+
+void coletar(Inventario& inventario) {
+    std::string nome = lerNome("Nome: ");
+    int peso = lerInteiroPositivo("Peso: ");
+    int quantidade = lerInteiroPositivo("Quantidade: ");
 
     if (inventario.coletar(nome, peso, quantidade)) {
         std::cout << "Item coletado." << std::endl;
@@ -33,9 +70,7 @@ void coletar(Inventario& inventario) {
 }
 
 void usar(Inventario& inventario) {
-    std::string nome;
-    std::cout << "Nome: ";
-    std::cin >> nome;
+    std::string nome = lerNome("Nome: ");
 
     if (inventario.usar(nome)) {
         std::cout << "Item usado." << std::endl;
@@ -45,12 +80,26 @@ void usar(Inventario& inventario) {
 }
 
 void descartar(Inventario& inventario) {
-    std::string nome;
-    std::cout << "Nome: ";
-    std::cin >> nome;
+    std::string nome = lerNome("Nome: ");
 
     if (inventario.descartar(nome)) {
         std::cout << "Item descartado." << std::endl;
+    } else {
+        std::cout << "Item nao encontrado." << std::endl;
+    }
+}
+
+void buscar(const Inventario& inventario) {
+    if (inventario.vazio()) {
+        std::cout << "Inventario vazio." << std::endl;
+        return;
+    }
+
+    std::string nome = lerNome("Nome: ");
+    Item item;
+    if (inventario.buscar(nome, item)) {
+        std::cout << item.getNome() << " - peso " << item.getPeso()
+                  << " - quantidade " << item.getQuantidade() << std::endl;
     } else {
         std::cout << "Item nao encontrado." << std::endl;
     }
@@ -73,12 +122,8 @@ void listar(const Inventario& inventario, int limite) {
 }
 
 int main() {
-    std::string nome;
-    int limite;
-    std::cout << "Nome do personagem: ";
-    std::cin >> nome;
-    std::cout << "Limite de peso: ";
-    std::cin >> limite;
+    std::string nome = lerNome("Nome do personagem: ");
+    int limite = lerInteiroPositivo("Limite de peso: ");
 
     Personagem personagem(nome, limite);
     Inventario inventario(personagem);
@@ -86,8 +131,7 @@ int main() {
     int opcao = -1;
     while (opcao != 0) {
         mostrarMenu();
-        std::cout << "Opcao: ";
-        std::cin >> opcao;
+        opcao = lerOpcao();
 
         if (opcao == 1) {
             coletar(inventario);
@@ -97,6 +141,8 @@ int main() {
             descartar(inventario);
         } else if (opcao == 4) {
             listar(inventario, personagem.getLimitePeso());
+        } else if (opcao == 5) {
+            buscar(inventario);
         } else if (opcao == 0) {
             std::cout << "Sair" << std::endl;
         } else {

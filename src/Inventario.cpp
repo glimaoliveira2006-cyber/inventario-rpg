@@ -50,6 +50,16 @@ bool Inventario::descartar(const std::string& nome) {
     return true;
 }
 
+bool Inventario::buscar(const std::string& nome, Item& resultado) const {
+    std::map<std::string, Item>::const_iterator it = itens.find(nome);
+    if (it == itens.end()) {
+        return false;
+    }
+
+    resultado = it->second;
+    return true;
+}
+
 std::list<Item> Inventario::listar() const {
     std::list<Item> copia;
     std::map<std::string, Item>::const_iterator it;
