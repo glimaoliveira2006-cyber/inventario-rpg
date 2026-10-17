@@ -29,6 +29,17 @@ O peso e a quantidade de um item devem ser maiores que zero.
 Não dá para descartar ou usar um item que não existe no inventário.
 Quando a quantidade de um item chega a zero, ele sai do inventário.
 
+## regras
+
+- O peso total dos itens não pode passar do limite do personagem.
+- Itens com o mesmo nome ficam numa única entrada, e a quantidade soma.
+- O peso e a quantidade de um item devem ser maiores que zero.
+- Não dá para descartar ou usar um item que não existe no inventário.
+- Quando a quantidade de um item chega a zero, ele sai do inventário.
+- Nomes de itens são comparados exatamente: Pocao e pocao são itens diferentes.   ← nova
+- Se o item já existe, o peso do primeiro cadastro é mantido e só a quantidade é somada.   ← nova
+...
+
 
 ## Quando algo dá errado
 
@@ -38,7 +49,11 @@ Inventário vazio: o sistema mostra "Inventário vazio" e volta ao menu.
 Peso acima do limite: o item não é adicionado e o sistema avisa.
 Entrada inválida: se o usuário digitar texto onde se espera número, ou um número menor ou igual a zero, o sistema mostra "Entrada inválida" e pede de novo.
 
-## Classes que eu imagino
+## quando algo dá errado
+- Buscar com inventário vazio: mostra "Inventario vazio."
+- Nome de item vazio: mostra "Entrada invalida."
+- Mensagens padrão: "Item coletado.", "Item usado.", "Item descartado.", "Item nao encontrado.", "Inventario vazio.", "Entrada invalida.", "Peso acima do limite."
+
 
 ## Classes que eu imagino
 
