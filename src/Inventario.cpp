@@ -26,6 +26,30 @@ bool Inventario::coletar(const std::string& nome, int peso, int quantidade) {
     return true;
 }
 
+bool Inventario::usar(const std::string& nome) {
+    std::map<std::string, Item>::iterator it = itens.find(nome);
+    if (it == itens.end()) {
+        return false;
+    }
+
+    it->second.retirarQuantidade(1);
+    if (it->second.getQuantidade() == 0) {
+        itens.erase(it);
+    }
+
+    return true;
+}
+
+bool Inventario::descartar(const std::string& nome) {
+    std::map<std::string, Item>::iterator it = itens.find(nome);
+    if (it == itens.end()) {
+        return false;
+    }
+
+    itens.erase(it);
+    return true;
+}
+
 std::list<Item> Inventario::listar() const {
     std::list<Item> copia;
     std::map<std::string, Item>::const_iterator it;

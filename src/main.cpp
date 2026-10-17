@@ -7,6 +7,8 @@
 
 void mostrarMenu() {
     std::cout << "1 Coletar" << std::endl;
+    std::cout << "2 Usar" << std::endl;
+    std::cout << "3 Descartar" << std::endl;
     std::cout << "4 Listar" << std::endl;
     std::cout << "0 Sair" << std::endl;
 }
@@ -27,6 +29,30 @@ void coletar(Inventario& inventario) {
         std::cout << "Item coletado." << std::endl;
     } else {
         std::cout << "Peso acima do limite." << std::endl;
+    }
+}
+
+void usar(Inventario& inventario) {
+    std::string nome;
+    std::cout << "Nome: ";
+    std::cin >> nome;
+
+    if (inventario.usar(nome)) {
+        std::cout << "Item usado." << std::endl;
+    } else {
+        std::cout << "Item nao encontrado." << std::endl;
+    }
+}
+
+void descartar(Inventario& inventario) {
+    std::string nome;
+    std::cout << "Nome: ";
+    std::cin >> nome;
+
+    if (inventario.descartar(nome)) {
+        std::cout << "Item descartado." << std::endl;
+    } else {
+        std::cout << "Item nao encontrado." << std::endl;
     }
 }
 
@@ -65,6 +91,10 @@ int main() {
 
         if (opcao == 1) {
             coletar(inventario);
+        } else if (opcao == 2) {
+            usar(inventario);
+        } else if (opcao == 3) {
+            descartar(inventario);
         } else if (opcao == 4) {
             listar(inventario, personagem.getLimitePeso());
         } else if (opcao == 0) {

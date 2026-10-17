@@ -15,6 +15,8 @@ private:
 public:
     Inventario(const Personagem& dono);
     bool coletar(const std::string& nome, int peso, int quantidade);
+    bool usar(const std::string& nome);
+    bool descartar(const std::string& nome);
     std::list<Item> listar() const;
     int pesoTotal() const;
     bool vazio() const;
