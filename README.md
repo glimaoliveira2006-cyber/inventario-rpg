@@ -32,19 +32,15 @@ estiver escrito aqui.
 
 ## Onde uso a STL
 
-Escreva esta seção sem IA. Para cada container ou algoritmo da STL que o
-sistema usa: em que classe ele está, o que guarda, e por que você escolheu
-ele e não outro.
-
-| Onde | O quê | Por quê |
-| --- | --- | --- |
-| | | |
+- **`map<string, Item>`** (classe `Inventario`): guarda os itens do inventário, com o nome do item como chave. Usei `map` porque cada nome aparece uma única vez e a busca pelo nome é rápida, o que ajuda em coletar, usar, descartar e buscar. Quando o item já existe, só a quantidade é somada na mesma entrada. A classe `Item` tem construtor padrão porque o `map` precisa dele para criar uma entrada nova.
+- **`list<Item>`** (método `Inventario::listar()`): devolve uma cópia dos itens numa lista. Usei `list` porque ela tem o seu próprio `sort()` e porque aqui só preciso percorrer os itens do início ao fim, sem acessar por posição.
+- **`list::sort` com `Item::operator<`** (classes `Inventario` e `Item`): o `listar()` ordena a lista com `sort()`, que usa o `operator<` definido na classe `Item`. Esse operador compara pelo peso, do mais leve ao mais pesado, e, se o peso for igual, pelo nome. Como o `map` já guarda os itens em ordem de nome, o `sort` muda a ordem da listagem.
 
 ## Como usei a IA
 
-Escreva com as suas palavras:
+Usei o OpenCode com o modelo Big Pickle. Trabalhei em etapas: escrevi o `DESCRICAO.md` e fiz um commit só com ele, pedi à IA que apontasse o que estava ambíguo, respondi e atualizei a descrição, e depois pedi o plano em `PLANO.md`. Li o plano e pedi correções antes de programar. Implementei uma etapa por vez, cada uma numa conversa nova (`/new`) e com um commit.
 
-- Modelo usado:
-- Um pedido que deu certo, e por que você acha que deu certo:
-- Um pedido que deu errado, o que veio errado e como você mudou o pedido:
-- Uma coisa que a IA sugeriu e você recusou, e por quê:
+Depois de cada etapa conferi o resultado: compilei com `-Wall -Wextra`, rodei todos os cenários de `exemplos/`, olhei o `git status` e procurei `cin` e `cout` nas classes para garantir que a lógica está separada da interface.
+
+Corrigi três coisas no caminho: troquei `double` por `int` no peso, porque a descrição diz que o peso é inteiro; pedi para simplificar o armazenamento, trocando um `map` com iteradores da `list` por `map<string, Item>`, que é mais fácil de explicar e usa só o que vimos em aula; e fiz o `operator<` comparar pelo peso, para o `sort` ter efeito sobre a ordem que o `map` já dá.
+
