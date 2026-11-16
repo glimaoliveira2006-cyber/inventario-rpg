@@ -1,10 +1,14 @@
 #include "Item.hpp"
+#include <stdexcept>
 
 Item::Item() : nome(""), peso(0), quantidade(0) {
 }
 
 Item::Item(const std::string& nome, int peso, int quantidade)
     : nome(nome), peso(peso), quantidade(quantidade) {
+    if (nome.find(';') != std::string::npos) {
+        throw std::invalid_argument("Nome invalido.");
+    }
 }
 
 std::string Item::getNome() const {

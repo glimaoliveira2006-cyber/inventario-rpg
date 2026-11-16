@@ -1,9 +1,14 @@
 #include "Inventario.hpp"
+#include <stdexcept>
 
 Inventario::Inventario(const Personagem& dono) : dono(dono) {
 }
 
 bool Inventario::coletar(const std::string& nome, int peso, int quantidade) {
+    if (nome.find(';') != std::string::npos) {
+        throw std::invalid_argument("Nome invalido.");
+    }
+
     std::map<std::string, Item>::iterator it = itens.find(nome);
 
     int pesoAdicionado;
@@ -24,6 +29,13 @@ bool Inventario::coletar(const std::string& nome, int peso, int quantidade) {
     }
 
     return true;
+}
+
+void Inventario::definirItem(const std::string& nome, int peso, int quantidade) {
+    if (nome.find(';') != std::string::npos) {
+        throw std::invalid_argument("Nome invalido.");
+    }
+    itens[nome] = Item(nome, peso, quantidade);
 }
 
 bool Inventario::usar(const std::string& nome) {
@@ -81,4 +93,8 @@ int Inventario::pesoTotal() const {
 
 bool Inventario::vazio() const {
     return itens.empty();
+}
+
+const Personagem& Inventario::getDono() const {
+    return dono;
 }

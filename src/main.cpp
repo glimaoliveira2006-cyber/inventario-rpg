@@ -1,9 +1,11 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <stdexcept>
 #include "Item.hpp"
 #include "Personagem.hpp"
 #include "Inventario.hpp"
+#include "Persistencia.hpp"
 
 void mostrarMenu() {
     std::cout << "1 Coletar" << std::endl;
@@ -62,10 +64,14 @@ void coletar(Inventario& inventario) {
     int peso = lerInteiroPositivo("Peso: ");
     int quantidade = lerInteiroPositivo("Quantidade: ");
 
-    if (inventario.coletar(nome, peso, quantidade)) {
-        std::cout << "Item coletado." << std::endl;
-    } else {
-        std::cout << "Peso acima do limite." << std::endl;
+    try {
+        if (inventario.coletar(nome, peso, quantidade)) {
+            std::cout << "Item coletado." << std::endl;
+        } else {
+            std::cout << "Peso acima do limite." << std::endl;
+        }
+    } catch (const std::invalid_argument& e) {
+        std::cout << e.what() << std::endl;
     }
 }
 
@@ -122,32 +128,75 @@ void listar(const Inventario& inventario, int limite) {
 }
 
 int main() {
-    std::string nome = lerNome("Nome do personagem: ");
-    int limite = lerInteiroPositivo("Limite de peso: ");
+    const std::string arquivoDados = "dados.txt";
+    Persistencia persistencia;
+    std::string nome;
+    int limite = 0;
+    std::list<Item> itensCarregados;
+    bool carregado = false;
 
-    Personagem personagem(nome, limite);
-    Inventario inventario(personagem);
+    try {
+        carregado = persistencia.carregar(arquivoDados, nome, limite, itensCarregados);
+    } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
+    }
 
-    int opcao = -1;
-    while (opcao != 0) {
-        mostrarMenu();
-        opcao = lerOpcao();
-
-        if (opcao == 1) {
-            coletar(inventario);
-        } else if (opcao == 2) {
-            usar(inventario);
-        } else if (opcao == 3) {
-            descartar(inventario);
-        } else if (opcao == 4) {
-            listar(inventario, personagem.getLimitePeso());
-        } else if (opcao == 5) {
-            buscar(inventario);
-        } else if (opcao == 0) {
-            std::cout << "Sair" << std::endl;
-        } else {
-            std::cout << "Entrada invalida." << std::endl;
+    if (!carregado) {
+        bool personagemValido = false;
+        while (!personagemValido) {
+            try {
+                nome = lerNome("Nome do personagem: ");
+                limite = lerInteiroPositivo("Limite de peso: ");
+                Personagem personagem(nome, limite);
+                personagemValido = true;
+            } catch (const std::invalid_argument& e) {
+                std::cout << e.what() << std::endl;
+            }
         }
+    }
+
+    try {
+        Personagem personagem(nome, limite);
+        Inventario inventario(personagem);
+
+        if (carregado) {
+            std::list<Item>::const_iterator it;
+            for (it = itensCarregados.begin(); it != itensCarregados.end(); ++it) {
+                inventario.definirItem(it->getNome(), it->getPeso(), it->getQuantidade());
+            }
+        }
+
+        int opcao = -1;
+        while (opcao != 0) {
+            mostrarMenu();
+            opcao = lerOpcao();
+
+            if (opcao == 1) {
+                coletar(inventario);
+            } else if (opcao == 2) {
+                usar(inventario);
+            } else if (opcao == 3) {
+                descartar(inventario);
+            } else if (opcao == 4) {
+                listar(inventario, personagem.getLimitePeso());
+            } else if (opcao == 5) {
+                buscar(inventario);
+            } else if (opcao == 0) {
+                try {
+                    persistencia.salvar(arquivoDados, inventario.getDono().getNome(),
+                                        inventario.getDono().getLimitePeso(), inventario.listar());
+                    std::cout << "Sair" << std::endl;
+                } catch (const std::exception& e) {
+                    std::cout << e.what() << std::endl;
+                }
+            } else {
+                std::cout << "Entrada invalida." << std::endl;
+            }
+        }
+    } catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+        return 1;
     }
 
     return 0;
