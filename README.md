@@ -44,3 +44,41 @@ Depois de cada etapa conferi o resultado: compilei com `-Wall -Wextra`, rodei to
 
 Corrigi três coisas no caminho: troquei `double` por `int` no peso, porque a descrição diz que o peso é inteiro; pedi para simplificar o armazenamento, trocando um `map` com iteradores da `list` por `map<string, Item>`, que é mais fácil de explicar e usa só o que vimos em aula; e fiz o `operator<` comparar pelo peso, para o `sort` ter efeito sobre a ordem que o `map` já dá.
 
+
+# Evolução
+
+Modelo usado no OpenCode: (escreva aqui qual você escolheu)
+
+# Arquivo
+
+- O que pedi à IA:
+- O que encontrei ao ler o código:
+
+# Exceções
+
+- O que pedi à IA:
+- O que encontrei ao ler o código:
+
+# Revisão
+
+- O que a IA apontou, e os dois problemas que corrigi:
+- Um problema que a IA apontou e eu não corrigi, e por quê:
+
+# Evolução
+
+Modelo usado no OpenCode: (escreva aqui qual você escolheu)
+
+# Arquivo
+
+- O que pedi à IA:
+- O que encontrei ao ler o código:
+
+# Exceções
+
+- O que pedi à IA:
+- O que encontrei ao ler o código:
+
+# Revisão
+
+- O que a IA apontou, e os dois problemas que corrigi:
+- Um problema que a IA apontou e eu não corrigi, e por quê:
