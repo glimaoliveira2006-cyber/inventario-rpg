@@ -47,38 +47,34 @@ Corrigi três coisas no caminho: troquei `double` por `int` no peso, porque a de
 
 # Evolução
 
-Modelo usado no OpenCode: (escreva aqui qual você escolheu)
+Modelo usado no OpenCode: Big Pickle
 
 # Arquivo
 
 - O que pedi à IA:
-- O que encontrei ao ler o código:
+
+  Primeiro pedido: Pedi para a IA analisar os arquivos DESCRICAO.md e PLANO.md e sugerir como seria feita a implementação. Deixei claro que, nesse primeiro momento, ela não deveria alterar nenhum arquivo.
+
+  Ajustes no plano: Depois, pedi algumas mudanças no planejamento: usar ; como separador, carregar os dados ao iniciar o programa e salvar ao sair, sem alterar o menu. Também expliquei que, se o arquivo não existisse, o programa deveria começar vazio, e que dados.txt deveria ser adicionado ao .gitignore.
+
+  Aprovação da implementação: Após os ajustes no plano, autorizei a implementação. Pedi também que, se o arquivo existisse, mas tivesse dados inválidos, o programa mostrasse o erro e encerrasse sem salvar. Além disso, nomes contendo ; deveriam ser recusados usando invalid_argument.
+
+- O que encontrei ao ler o código (ela fez o que eu pedi? algo veio diferente?):
+
+  Diferenças entre o planejado e o feito: Percebi que a primeira proposta não seguia totalmente o que foi pedido, pois usava espaço em vez de ; e tratava a ausência do arquivo como erro. Depois de solicitar as correções, a IA ajustou esses pontos. Porém, também modificou Item.cpp e Personagem.cpp, mesmo tendo dito que não precisaria alterar esses arquivos.
+
+  Problemas encontrados no código: Ao analisar o método carregar, percebi que a abertura do arquivo estava mais complicada do que precisava, com duas tentativas de abertura e uso de fopen. Também notei que qualquer falha ao abrir o arquivo era tratada como se ele não existisse.
+
+  Problema encontrado durante os testes: Ao testar o carregamento de Espada;50;1 com limite de peso 10, percebi que o programa aceitava os dados e mostrava um peso total de 50 de 10. Isso mostrou que não existia uma verificação do limite de peso durante o carregamento.
+
+  O que funcionou nos testes: Testei o salvamento e o carregamento dos dados, e os dois funcionaram corretamente. Também funcionou iniciar com o inventário vazio quando o arquivo não existia. Os testes com Pocao;abc;3 e com o arquivo vazio apresentaram erros, sem alterar o arquivo original.
 
 # Exceções
 
 - O que pedi à IA:
-- O que encontrei ao ler o código:
+- O que encontrei ao ler o código (onde lança, onde trata, o que o usuário vê):
 
 # Revisão
 
 - O que a IA apontou, e os dois problemas que corrigi:
-- Um problema que a IA apontou e eu não corrigi, e por quê:
-
-# Evolução
-
-Modelo usado no OpenCode: (escreva aqui qual você escolheu)
-
-# Arquivo
-
-- O que pedi à IA:
-- O que encontrei ao ler o código:
-
-# Exceções
-
-- O que pedi à IA:
-- O que encontrei ao ler o código:
-
-# Revisão
-
-- O que a IA apontou, e os dois problemas que corrigi:
-- Um problema que a IA apontou e eu não corrigi, e por quê:
+- Um problema que a IA apontou e eu não corrigi, e por quê (ou, se ela só acertou, uma coisa que ela errou):
